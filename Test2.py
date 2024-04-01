@@ -62,7 +62,7 @@ name = input("What is your name? ")
 print("Hello, " + name + "! Let's play a game. You will be given a series of choices and you must choose one each time. Let's begin!")
 
 
-#Function to play the game
+
 def first():
     if used_choices == [] or len(used_choices) < 10:
         ran = random.randint(0, (len(choices) - 1))
@@ -72,19 +72,58 @@ def first():
                 print('Invalid input. Please try again.')
                 r1 = input('\nChoice 1: ' + choices[ran][0] + '\n\n           OR        ' + '\n\nChoice 2: ' + choices[ran][1] + '\n\nPlease type 1 or 2: ')
             if r1 == '1':
-                used_indices.append(ran)
-                used_choices.append(choices[ran][0])
-                return first()
+                if choices[ran][0] in all_triggers:
+                    trigger.append(choices[ran][0])
+                    return check()
+                else:
+                    used_indices.append(ran)
+                    used_choices.append(choices[ran][0])
+                    return first()
             elif r1 == '2':
-                used_indices.append(ran)
-                used_choices.append(choices[ran][1])
-                return first()
-    elif len(used_choices) == 10:
+                if choices[ran][1] in all_triggers:
+                    trigger.append(choices[ran][1])
+                    return check()
+                else:
+                    used_indices.append(ran)
+                    used_choices.append(choices[ran][1])
+                    return first()
+    else:
         print('You have made your final choice. Here is your fate...')
-        used_indices.clear()
-        used_choices.clear()
+        used_indices = []
+        used_choices = []
         return
-          
+
+
+
+def check():
+    if trigger[0] in win:
+        print(fates[-1])
+        used_indices = []
+        used_choices = []
+        trigger = []
+        flag = False
+        return restart()
+    elif trigger[0] in lose:
+        used_indices = []
+        used_choices = []
+        trigger = []
+        flag = False
+        return restart()
+    elif trigger[0] in reset:
+        print(fates[-3])
+        used_indices = []
+        used_choices = []
+        trigger = []
+        flag = False
+        return first()
+    elif trigger[0] in setback:
+        print(fates[-4])
+        used_indices = used_indices[:-3]
+        used_choices = used_choices[:-3]
+        trigger = []
+        flag = False
+        return first()                       
+            
 
 #Function to restart the game
 def restart():
@@ -101,9 +140,8 @@ def restart():
 
 
 
-#Start the game
+
 first()
 
 
 
-    
