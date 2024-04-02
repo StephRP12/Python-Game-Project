@@ -1,5 +1,4 @@
-#Take Your Pick is a simple game where the user is asked to choose between two options. The user is given a choice between two options and must choose one. 
-#The game will keep track of the user's choices and display the results at the end. The game will be implemented using Python and will be run in the terminal.
+#File for testing purposes only. Not the final version of the game.
 
 import random
 
@@ -29,9 +28,20 @@ choices = [('sun', 'moon'), ('magic', 'time travel'), ('deep space', 'deep ocean
            ('elephant', 'rhinoceros'), ('genie', 'fortune teller'), ('bath', 'shower'), ('water park', 'amusement park'), ('Spiderman', 'Batman'), ('dishes', 'laundry'), ('on', 'off'), 
            ('movies', 'TV shows'), ('sandwiches', 'burgers'), ('pillow', 'blanket'), ('guitar', 'drums'), ('hoodie', 'jacket')]
 
-fates = [('You have chosen well.'), ('Some of your choices have been questionable.'), ("You didn't make very good choices."), 
-         (''), (''), (''), (''), (''), (''), ('Not the best decision. You must go back and make an additional 3 choices.'), ("I'm sorry. You must go back at the beginning. Try again."), 
+
+fates = [('It seems you have trouble making up your mind. You need to be more decisive and confident in your choices.'), 
+         ('You have a balanced way of looking at things. This will take you far.'), 
+         ("You haven't made very good choices. You should be more thoughtful of the impact and consequences of your actions."), 
+         ('Your responses are suspicious. You need to be more honest with yourself and others.'), 
+         ('Some of your choices have been questionable. You have a lot more to learn, but if you keep an open mind, you have the potential to live a successful life.'), 
+         ('Your future is uncertain. Take great care and seek wise counsel when making important decisions.'), 
+         ('You are a mystery. Your fate cannot be determined at this time. Please come back later and try again.'), 
+         ('You have chosen well. Keep your head up and trust your instincts. You have the potential to achieve great things.'), 
+         ("You've made good choices. Just be careful not to get too comfortable. There's always room for improvement."), 
+         ("A bit hard to tell, but you seem to be on the right track. Just be careful and don't be afraid to ask for advice."),
+         ('Not the best decision. You must go back and make up to an additional 3 choices.'), ("I'm sorry. You must go back at the beginning. Try again."), 
          ('You have died. Game over.'), ('Congratulations! You have found the meaning of life. You win!')]
+
 
 win = ['42', 'light', 'pizza', 'dogs', 'above']
 
@@ -41,69 +51,111 @@ reset = ['longer life with smaller brain', 'goodbye', 'receive', 'grumpy', 'empt
 
 setback = ['simple', 'none', 'no', 'shallow', 'identical']
 
-all_triggers = []
+all_restarts = []
 
 for i in win:
-    all_triggers.append(i)
+    all_restarts.append(i)
 for i in lose:
-    all_triggers.append(i)
+    all_restarts.append(i)
 for i in reset:
-    all_triggers.append(i)
-for i in setback:
-    all_triggers.append(i)
+    all_restarts.append(i)
 
-used_indices = []
-
-used_choices = []
 
 #Introduction
-print("Welcome to Take Your Pick!")
+print("Welcome to Doors of Fate!")
 name = input("What is your name? ")
-print("Hello, " + name + "! Let's play a game. You will be given a series of choices and you must choose one each time. Let's begin!")
+print("Hello, " + name + """! Let's play a game. You are in a room with only two doors. Each door represents a choice. You must decide which is the right one.
+Whichever door you choose leads to another room with two more doors. This will continue until the culmination of your decisions is enough to determine your fate. 
+                                                                    Let's begin!""")
 
 
 #Function to play the game
-def first():
-    if used_choices == [] or len(used_choices) < 10:
+def main():
+    used_indices = []
+    used_choices = []
+    count1 = 0
+    count2 = 0
+    while used_choices == [] or len(used_choices) < 10:
         ran = random.randint(0, (len(choices) - 1))
         while ran not in used_indices:
-            r1 = input('\nChoice 1: ' + choices[ran][0] + '\n\n           OR        ' + '\n\nChoice 2: ' + choices[ran][1] + '\n\nPlease type 1 or 2: ')
-            while r1 != '1' and r1 != '2':
+            res = input('\n\nDOOR 1: ' + choices[ran][0] + '\n\n         OR        ' + '\n\nDOOR 2: ' + choices[ran][1] + '\n\nPlease type 1 or 2: ')
+            while res != '1' and res != '2':
                 print('Invalid input. Please try again.')
-                r1 = input('\nChoice 1: ' + choices[ran][0] + '\n\n           OR        ' + '\n\nChoice 2: ' + choices[ran][1] + '\n\nPlease type 1 or 2: ')
-            if r1 == '1':
-                used_indices.append(ran)
-                used_choices.append(choices[ran][0])
-                return first()
-            elif r1 == '2':
-                used_indices.append(ran)
-                used_choices.append(choices[ran][1])
-                return first()
-    elif len(used_choices) == 10:
-        print('You have made your final choice. Here is your fate...')
-        used_indices.clear()
-        used_choices.clear()
-        return
-          
+                res = input('\n\nDOOR 1: ' + choices[ran][0] + '\n\n         OR        ' + '\n\nDOOR 2: ' + choices[ran][1] + '\n\nPlease type 1 or 2: ')
+            if res == '1':
+                if choices[ran][0] in all_restarts:
+                    if choices[ran][0] in win:
+                        print(fates[-1])
+                        return restart()
+                    elif choices[ran][0] in lose:
+                        print(fates[-2])
+                        return restart()
+                    elif choices[ran][0] in reset:
+                        print(fates[-3])
+                        return main()
+                elif choices[ran][0] in setback:
+                    used_indices.append(ran)
+                    used_choices.append(choices[ran][0])
+                    print(fates[-4])
+                    used_choices = used_choices[:-3]
+                else:
+                    used_indices.append(ran)
+                    used_choices.append(choices[ran][0])
+                    count1 += 1
+            elif res == '2':
+                if choices[ran][1] in all_restarts:
+                    if choices[ran][1] in win:
+                        print(fates[-1])
+                        return restart()
+                    elif choices[ran][1] in lose:
+                        print(fates[-2])
+                        return restart()
+                    elif choices[ran][1] in reset:
+                        print(fates[-3])
+                        return main()
+                elif choices[ran][1] in setback:
+                    used_indices.append(ran)
+                    used_choices.append(choices[ran][1])
+                    print(fates[-4])
+                    used_choices = used_choices[:-3]
+                else:
+                    used_indices.append(ran)
+                    used_choices.append(choices[ran][1])
+                    count2 += 1
+    else:
+        print('You have made your final choice. ' + name + ', here is your fate...')
+        print(count1, count2)
+        if count1 == count2:
+            ran2 = random.randint(0, 1)
+            print(fates[ran2])
+        elif count1 or count2 == 0:
+            ran3 = random.randint(2, 3)
+            print(fates[ran3])
+        elif count1 or count2 == 1:
+            ran4 = random.randint(4, 5)
+            print(fates[ran4])
+        else:
+            ran5 = random.randint(0, 9)
+            print(fates[ran5])
+    
 
 #Function to restart the game
 def restart():
     answer = input("If you would like to play again, type 'y'. If not, type 'n'... ")
-    while True:
-        if answer.lower() == 'y':
-            return first()
-        elif answer.lower() == 'n':
-            print('Thank you for playing. Goodbye.')
-            break
-        else:
-            print('Invalid input. Please try again.')
-            answer = input("If you would like to play again, type 'y'. If not, type 'n'... ")
-
-
-
-#Start the game
-first()
-
-
-
+    while answer.lower() != 'y' and answer.lower() != 'n':
+        print('Invalid input. Please try again.')
+        answer = input("If you would like to play again, type 'y'. If not, type 'n'... ")
+    if answer.lower() == 'n':
+        print('Thank you for playing. Goodbye.')
+    elif answer.lower() == 'y':
+        return main()
+        
     
+        
+#Start the game
+main()
+
+
+
+
+
