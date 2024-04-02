@@ -22,7 +22,7 @@ choices = [('sun', 'moon'), ('magic', 'time travel'), ('deep space', 'deep ocean
            ('mind reading', 'invisibility'), ('Grim Reaper', 'ghosts'), ('longer life with smaller brain', 'shorter life with larger brain'), ('butter', 'salt & pepper'), ('chicken', 'beef'), 
            ('breakfast', 'dinner'), ('pancakes', 'waffles'), ('baked', 'grilled'), ('simple', 'complex'), ('pudding', 'jello'), ('coffee', 'chocolate'), ('vanilla', 'caramel'), 
            ('sticky', 'chewy'), ('creamy', 'crunchy'), ('cupcakes', 'donuts'), ('centaur', 'minotaur'), ('Pegasus', 'unicorn'), ('puzzle', 'maze'), ('choose', 'chosen'), ('this', 'that'), 
-           ('board games', 'card games'), ('all', 'none'), ('anger', 'sadness'), ('volcano', 'underwater cave'), ('Raptor', 'Rex'), ('tornado', 'hurricane'), ('flood', 'fire'), 
+           ('board games', 'card games'), ('all', 'none'), ('anger', 'sadness'), ('volcano', 'underwater cave'), ('Raptor', 'T-Rex'), ('tornado', 'hurricane'), ('flood', 'fire'), 
            ('earthquake', 'tidal wave'), ('elevator', 'escalator'), ('hello', 'goodbye'), ('motorcycle', 'jet ski'), ('city', 'country'), ('camping', 'rafting'), ('rainbow', 'waterfall'), 
            ('fame', 'fortune'), ('near', 'far'), ('stay', 'go'), ('Christmas', 'Thanksgiving'), ('surfing', 'snowboarding'), ('fork', 'spoon'), ('rare', 'common'), ('twist', 'turn'), 
            ('Halloween', 'birthday'), ('twist', 'turn'), ('phoenix', 'griffin'), ('fridge', 'stove'), ('add', 'subtract'), ('light', 'dark'), ('burp', 'fart'), ('garlic', 'onion'), 
@@ -42,8 +42,8 @@ fates = [('It seems you have trouble making up your mind. You need to be more de
          ('You have chosen well. Keep your head up and trust your instincts. You have the potential to achieve great things.'), 
          ("You've made good choices. Just be careful not to get too comfortable. There's always room for improvement."), 
          ("A bit hard to tell, but you seem to be on the right track. Just be careful and don't be afraid to ask for advice."),
-         ('Not the best decision. You must go back and make up to an additional 3 choices.'), ("I'm sorry. You must go back at the beginning. Try again."), 
-         ('You have died. Game over.'), ('Congratulations! You have found the meaning of life. You win!')]
+         ('\n\nNot the best decision. You must go back and make up to an additional 3 choices.'), ("\n\nI'm sorry. You must go back at the beginning. Try again."), 
+         ('\nYou have died. Game over.'), ('\nCongratulations! You have found the meaning of life. You win!')]
 
 
 win = ['42', 'light', 'pizza', 'dogs', 'above']
@@ -65,15 +65,16 @@ for i in reset:
 
 
 #Introduction
-print("Welcome to Doors of Fate!")
-name = input("What is your name? ")
-print("Hello, " + name + """! Let's play a game. You are in a room with only two doors. Each door represents a choice. You must decide which is the right one.
+print("\nWelcome to Doors of Fate!")
+name = input("\nWhat is your name? ")
+print("\nHello, " + name + """! Let's play a game. You are in a room with only two doors. Each door represents a choice. You must decide which is the right one.
 Whichever door you choose leads to another room with two more doors. This will continue until the culmination of your decisions is enough to determine your fate. 
                                                                     Let's begin!""")
 
 
 #Function to play the game
 def main():
+    print("\n\nSTART")
     used_indices = []
     used_choices = []
     count1 = 0
@@ -81,10 +82,10 @@ def main():
     while used_choices == [] or len(used_choices) < 10:
         ran = random.randint(0, (len(choices) - 1))
         while ran not in used_indices:
-            res = input('\n\nDOOR 1: ' + choices[ran][0] + '\n\n         OR        ' + '\n\nDOOR 2: ' + choices[ran][1] + '\n\nPlease type 1 or 2: ')
+            res = input('\n\nDOOR 1: ' + choices[ran][0] + '\n\n        OR        ' + '\n\nDOOR 2: ' + choices[ran][1] + '\n\nPlease type 1 or 2: ')
             while res != '1' and res != '2':
                 print('Invalid input. Please try again.')
-                res = input('\n\nDOOR 1: ' + choices[ran][0] + '\n\n         OR        ' + '\n\nDOOR 2: ' + choices[ran][1] + '\n\nPlease type 1 or 2: ')
+                res = input('\n\nDOOR 1: ' + choices[ran][0] + '\n\n        OR        ' + '\n\nDOOR 2: ' + choices[ran][1] + '\n\nPlease type 1 or 2: ')
             if res == '1':
                 if choices[ran][0] in all_restarts:
                     if choices[ran][0] in win:
@@ -99,8 +100,9 @@ def main():
                 elif choices[ran][0] in setback:
                     used_indices.append(ran)
                     used_choices.append(choices[ran][0])
-                    print(fates[-4])
                     used_choices = used_choices[:-3]
+                    print(fates[-4])
+                    print('\n\nRESET STARTS HERE')
                 else:
                     used_indices.append(ran)
                     used_choices.append(choices[ran][0])
@@ -119,15 +121,15 @@ def main():
                 elif choices[ran][1] in setback:
                     used_indices.append(ran)
                     used_choices.append(choices[ran][1])
-                    print(fates[-4])
                     used_choices = used_choices[:-3]
+                    print(fates[-4])
+                    print('\n\nRESET STARTS HERE')
                 else:
                     used_indices.append(ran)
                     used_choices.append(choices[ran][1])
                     count2 += 1
     else:
-        print('You have made your final choice. ' + name + ', here is your fate...')
-        print(count1, count2)
+        print('\nYou have made your final choice. ' + name + ', here is your fate...\n')
         if count1 == count2:
             ran2 = random.randint(0, 1)
             print(fates[ran2])
@@ -140,16 +142,18 @@ def main():
         else:
             ran5 = random.randint(0, 9)
             print(fates[ran5])
-    
+        return restart()
+
+
 
 #Function to restart the game
 def restart():
-    answer = input("If you would like to play again, type 'y'. If not, type 'n'... ")
+    answer = input("\nIf you would like to play again, type 'y'. If not, type 'n'... ")
     while answer.lower() != 'y' and answer.lower() != 'n':
         print('Invalid input. Please try again.')
-        answer = input("If you would like to play again, type 'y'. If not, type 'n'... ")
+        answer = input("\nIf you would like to play again, type 'y'. If not, type 'n'... ")
     if answer.lower() == 'n':
-        print('Thank you for playing. Goodbye.')
+        print('\nThank you for playing. Goodbye.\n')
     elif answer.lower() == 'y':
         return main()
         
