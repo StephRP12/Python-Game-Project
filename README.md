@@ -6,3 +6,4 @@ Doors of Fate is a simple game where the user is asked to choose between two opt
 particular decision has triggered another action. The user could win, lose, restart, or have a setback and have to make up to 3 additional choices. At the end, the
 game will determine the user's fate based on the choices made. The game was implemented using Python and runs in the terminal.
 
+The test file was only for testing purposes while coding and isn't necessary to review. 
